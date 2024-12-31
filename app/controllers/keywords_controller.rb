@@ -10,16 +10,21 @@ class KeywordsController < ApplicationController
   end
 
   def create
-    service = Keywords::Create.new(current_user, keyword_params)
-    result = service.call
-
-    if result.success?
-      flash[:notice] = "Scrapping is progress, please wait for sometime."
-      redirect_to keywords_path, notice: result.message
+    unless params[:keyword]
+      flash[:alert] = "Please select file"
+      redirect_to new_keyword_path
     else
-      @keyword = service.keyword
-      flash.now[:alert] = result.message
-      render :new
+      service = Keywords::Create.new(current_user, keyword_params)
+      result = service.call
+
+      if result.success?
+        flash[:notice] = "Scrapping is progress, please wait for sometime."
+        redirect_to keywords_path, notice: result.message
+      else
+        @keyword = service.keyword
+        flash.now[:alert] = result.message
+        render :new
+      end
     end
   end
 
@@ -29,21 +34,18 @@ class KeywordsController < ApplicationController
   end
 
   def destroy
-    @keyword = Keyword.find_by(id: params[:id])
-    if @keyword&.destroy
-      flash[:notice] = "Keyword was successfully deleted."
-    else
-      flash[:alert] = "There was an issue deleting the keyword."
-    end
+    service = Keywords::Destroy.new(current_user, params[:id])
+    result = service.destroy
+  
+    flash[result.success? ? :notice : :alert] = result.message
     redirect_to keywords_path
   end
-
+  
   def delete_all
-    if current_user.keywords.destroy_all
-      flash[:notice] = "All keywords were successfully deleted."
-    else
-      flash[:alert] = "There was an issue deleting all keywords."
-    end
+    service = Keywords::Destroy.new(current_user)
+    result = service.destroy_all
+  
+    flash[result.success? ? :notice : :alert] = result.message
     redirect_to keywords_path
   end
 
