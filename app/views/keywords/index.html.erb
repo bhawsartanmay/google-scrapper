@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <%= link_to "Home", root_path, class: "navbar-brand" %>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item">
+            <%= form_with url: destroy_user_session_path, method: :delete, local: true do %>
+              <%= submit_tag "Logout", class: "btn btn-danger" %>
+            <% end %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Login", new_user_session_path, class: "nav-link btn btn-outline-primary" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <!-- Top Section with Buttons -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <%= link_to 'Upload New Keywords', new_keyword_path, class: 'btn btn-success btn-lg me-2' %>
+      <%= form_with url: delete_all_keywords_path, method: :delete, local: true, html: { class: "d-inline" } do %>
+        <%= submit_tag "Delete All", class: "btn btn-danger btn-lg" %>
+      <% end %>
+    </div>
+    <h1 class="mb-0">Your Keywords</h1>
+  </div>
+
+  <!-- Keywords Table -->
+  <div class="table-responsive shadow-sm">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Keyword</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @keywords.each do |keyword| %>
+          <tr>
+            <td><%= keyword.name %></td>
+            <td>
+              <span class="badge <%= keyword.status == 'Active' ? 'bg-success' : 'bg-secondary' %>">
+                <%= keyword.status %>
+              </span>
+            </td>
+            <td>
+              <%= link_to 'Show Results', keyword_path(keyword), class: 'btn btn-sm btn-outline-primary me-2' %>
+              <%= form_with url: keyword_path(keyword), method: :delete, local: true, html: { class: "d-inline" } do %>
+                <%= submit_tag "Delete", class: "btn btn-sm btn-outline-danger" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bottom Upload Button -->
+  <div class="text-center mt-4">
+    <%= link_to 'Upload New Keywords', new_keyword_path, class: 'btn btn-success btn-lg' %>
+  </div>
+</div>

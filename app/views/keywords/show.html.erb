@@ -1,0 +1,69 @@
+<div class="container mt-5">
+  <!-- Top Back Button -->
+  <div class="mb-4 text-start">
+    <%= link_to 'Back to Keywords', keywords_path, class: 'btn btn-outline-primary' %>
+  </div>
+
+  <!-- Page Header -->
+  <div class="card shadow-sm mb-5">
+    <div class="card-body bg-primary text-white text-center">
+      <h1 class="card-title mb-0">Keyword Details</h1>
+    </div>
+  </div>
+
+  <!-- Keyword Details -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+      <h4 class="mb-0">Keyword Information</h4>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <strong class="text-muted">Keyword:</strong>
+        <p class="form-control-plaintext text-dark"><%= @keyword.name %></p>
+      </div>
+      <div class="mb-3">
+        <strong class="text-muted">Status:</strong>
+        <p class="form-control-plaintext text-dark"><%= @keyword.status %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scraping Results -->
+  <% if @search_result.present? %>
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-success text-white">
+        <h4 class="mb-0">Scraping Results</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>Total AdWords Advertisers:</strong>
+            <span><%= @search_result.total_ads %></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>Total Links:</strong>
+            <span><%= @search_result.total_links %></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>Total Search Results:</strong>
+            <span><%= @search_result.total_results %></span>
+          </li>
+          <li class="list-group-item">
+            <strong>Page Cache (HTML):</strong>
+            <pre class="bg-light p-3 border rounded"><%= @search_result.html_cache %></pre>
+          </li>
+        </ul>
+      </div>
+    </div>
+  <% else %>
+    <div class="alert alert-warning shadow-sm" role="alert">
+      <h5 class="alert-heading">No Scraping Data Available</h5>
+      <p>Scraping data hasn't been fetched yet. Please try again later.</p>
+    </div>
+  <% end %>
+
+  <!-- Bottom Back Button -->
+  <div class="text-center mt-4">
+    <%= link_to 'Back to Keywords', keywords_path, class: 'btn btn-outline-primary btn-lg' %>
+  </div>
+</div>

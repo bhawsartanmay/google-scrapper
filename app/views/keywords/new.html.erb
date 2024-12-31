@@ -1,0 +1,29 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <!-- Card for CSV Upload -->
+      <div class="card shadow">
+        <div class="card-header bg-info text-white text-center">
+          <h1>Upload Keywords CSV</h1>
+        </div>
+        <div class="card-body">
+          <%= form_with model: @keyword, url: keywords_path, local: true, multipart: true, html: { class: "needs-validation", novalidate: true } do |form| %>
+            <!-- File Input -->
+            <div class="mb-3">
+              <%= form.label :file, 'Select CSV File', class: "form-label" %>
+              <%= form.file_field :file, accept: '.csv', required: true, class: "form-control" %>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid">
+              <%= form.submit 'Upload Keywords', class: 'btn btn-primary btn-lg' %>
+            </div>
+          <% end %>
+        </div>
+        <div class="card-footer text-center">
+          <%= link_to 'Back to Keywords List', keywords_path, class: 'btn btn-secondary btn-lg' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
